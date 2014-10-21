@@ -1,0 +1,27 @@
+{
+  "name": "gulp-md-gen",
+  "version": "0.0.1",
+  "description": "Generate landing documentation from markdown files",
+  "main": "index.js",
+  "dependencies": {
+    "through": "^2.3.6"
+  },
+  "scripts": {},
+  "keywords": [
+    "markdown",
+    "md",
+    "documentation",
+    "generator",
+    "pipe"
+  ],
+  "author": {
+    "name": "Arthur Creek",
+    "email": "arthur.creek@gmail.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arthur-creek/gulp-md-gen.git"
+  },
+  "homepage": "http://github.com/arthur-creek/gulp-md-gen"
+}
