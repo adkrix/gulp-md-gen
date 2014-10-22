@@ -4,10 +4,10 @@ var gutil = require('gulp-util');
 var PluginError = gutil.PluginError;
 var File = gutil.File;
 var Buffer = require('buffer').Buffer;
-var Concat = require('concat-with-sourcemaps');
+var Concat = require('concat-with-sourcemaps'); //!!!
 
 module.exports = function(file, opt) {
-  if (!file) throw new PluginError('gulp-concat', 'Missing file option for gulp-concat');
+  if (!file) throw new PluginError('gulp-md-gen', 'Missing file option for gulp-md-gen');
   if (!opt) opt = {};
   // to preserve existing |undefined| behaviour and to introduce |newLine: ""| for binaries
   if (typeof opt.newLine !== 'string') opt.newLine = gutil.linefeed;
@@ -17,22 +17,24 @@ module.exports = function(file, opt) {
   var fileName = file;
   if (typeof file !== 'string') {
     if (typeof file.path !== 'string') {
-      throw new PluginError('gulp-concat', 'Missing path in file options for gulp-concat');
+      throw new PluginError('gulp-md-gen', 'Missing path in file options for gulp-md-gen');
     }
     fileName = path.basename(file.path);
     firstFile = new File(file);
   }
 
-  var concat = null;
+  var concat = new Concat(false, fileName, opt.newLine);
 
   function bufferContents(file) {
     if (file.isNull()) return; // ignore
-    if (file.isStream()) return this.emit('error', new PluginError('gulp-concat',  'Streaming not supported'));
+    if (file.isStream()) return this.emit('error', new PluginError('gulp-md-gen', 'Streaming not supported'));
+
+    console.log(file.relative);
+
 
     if (!firstFile) firstFile = file;
-    if (!concat) concat = new Concat(!!firstFile.sourceMap, fileName, opt.newLine);
 
-    concat.add(file.relative, file.contents.toString(), file.sourceMap);
+    concat.add(file.relative, file.contents.toString());
   }
 
   function endStream() {
@@ -49,8 +51,13 @@ module.exports = function(file, opt) {
       if (concat.sourceMapping)
         joinedFile.sourceMap = JSON.parse(concat.sourceMap);
 
+
+
       this.emit('data', joinedFile);
     }
+
+
+    console.log(this);
 
     this.emit('end');
   }
